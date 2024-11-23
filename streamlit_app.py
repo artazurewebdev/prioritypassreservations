@@ -5,7 +5,7 @@ if "reservations" not in st.session_state:
     st.session_state["reservations"] = []
 
 # App title
-st.title("Priority Pass Lounge Reservations - HyperJets Airline")
+st.title("Priority Pass Lounge Reservations by HyperJets")
 
 # Sidebar application form
 st.sidebar.header("Make a Reservation")

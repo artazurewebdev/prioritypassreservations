@@ -1,11 +1,25 @@
 import streamlit as st
 import pandas as pd
+import os
 
+DATA_FILE = "reservations.csv"
+
+# Load data from the file
+def load_reservations():
+    if os.path.exists(DATA_FILE):
+        return pd.read_csv(DATA_FILE).to_dict(orient="records")
+    return []
+
+# Save data to the file
+def save_reservations(reservations):
+    pd.DataFrame(reservations).to_csv(DATA_FILE, index=False)
+
+# Load reservations into session state
 if "reservations" not in st.session_state:
-    st.session_state["reservations"] = []
+    st.session_state["reservations"] = load_reservations()
 
 # App title
-st.title("Priority Pass Lounge Reservations by HyperJets")
+st.title("Priority Pass Lounge Reservations - HyperJets Airline")
 
 # Sidebar application form
 st.sidebar.header("Make a Reservation")
@@ -33,14 +47,15 @@ with st.sidebar.form("reservation_form"):
         new_reservation = {
             "ID": id_number,
             "Name": name,
-            "Reservation Date": reservation_date,
-            "Reservation Time": reservation_time,
+            "Reservation Date": str(reservation_date),
+            "Reservation Time": str(reservation_time),
             "Membership Type": membership_type,
             "Suite Number": suite_number,
             "Suite Type": suite_type,
             "Status": status
         }
         st.session_state["reservations"].append(new_reservation)
+        save_reservations(st.session_state["reservations"])  # Save changes to file
         st.success("Reservation added successfully!")
 
 # Display current reservations
@@ -60,6 +75,7 @@ if st.session_state["reservations"]:
         st.session_state["reservations"] = [
             res for res in st.session_state["reservations"] if res["ID"] != selected_id
         ]
+        save_reservations(st.session_state["reservations"])  # Save changes to file
         st.success(f"Reservation with ID {selected_id} deleted.")
 else:
     st.info("No reservations yet. Use the form on the sidebar to add a new reservation.")

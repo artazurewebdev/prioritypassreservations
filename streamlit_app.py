@@ -7,9 +7,12 @@ DATA_FILE = "reservations.csv"
 
 # Load data from the file
 def load_reservations():
-    if os.path.exists(DATA_FILE) and os.path.getsize(DATA_FILE) > 0:
-        return pd.read_csv(DATA_FILE).to_dict(orient="records")
-    return []
+    try:
+        if os.path.exists(DATA_FILE) and os.path.getsize(DATA_FILE) > 0:
+            return pd.read_csv(DATA_FILE).to_dict(orient="records")
+    except pd.errors.EmptyDataError:
+        pass  # Ignore error if the file is empty
+    return []  # Return an empty list if file is empty or does not exist
 
 # Save data to the file
 def save_reservations(reservations):
@@ -80,4 +83,5 @@ if st.session_state["reservations"]:
         st.success(f"Reservation with ID {selected_id} deleted.")
 else:
     st.info("No reservations yet. Use the form on the sidebar to add a new reservation.")
+
 

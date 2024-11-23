@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 
+# File to save reservations
 DATA_FILE = "reservations.csv"
 
 # Load data from the file
@@ -19,7 +20,7 @@ if "reservations" not in st.session_state:
     st.session_state["reservations"] = load_reservations()
 
 # App title
-st.title("Priority Pass Lounge Reservations")
+st.title("Priority Pass Lounge Reservations - HyperJets Airline")
 
 # Sidebar application form
 st.sidebar.header("Make a Reservation")

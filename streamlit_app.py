@@ -20,7 +20,6 @@ if "reservations" not in st.session_state:
 
 # App title
 st.title("Priority Pass Lounge Reservations")
-st.subheader("Presented by HyperJets")
 
 # Sidebar application form
 st.sidebar.header("Make a Reservation")
